@@ -5,6 +5,6 @@ def application(env, start_response):
     response_headers = [
         ('Content-Type', 'text-plain'),
     ]
-    body = [bytes(i + '\n', 'ascii') for i in environ['QUERY_STRING'].split('&')]
+    body = [bytes(i + '\n', 'ascii') for i in env['QUERY_STRING'].split('&')]
     start_response(status, response_headers)
     return body
