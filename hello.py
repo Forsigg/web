@@ -1,4 +1,3 @@
-from os import environ
 
 
 def application(env, start_response):
