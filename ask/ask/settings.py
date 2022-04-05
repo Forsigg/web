@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'qa',
     'ask',
+    'django_seed',
 ]
 
 MIDDLEWARE = [
