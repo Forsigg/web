@@ -1,8 +1,8 @@
 from django.core.paginator import Paginator
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.shortcuts import render, get_object_or_404
 
-from .models import Question
+from .models import Question, Answer
 
 
 def test(request, *args, **kwargs):
@@ -25,7 +25,7 @@ def popular(request):
     questions = Question.objects.popular()
     page = request.GET.get('page', 1)
     paginator = Paginator(questions, 10)
-    paginator.baseurl = '/popular?page='
+    paginator.baseurl = '/popular/?page='
     page = paginator.page(page)
     return render(request, 'popular.html', context={
         'questions': page.object_list,
@@ -35,8 +35,11 @@ def popular(request):
 
 
 def question(request, id):
-    question = get_object_or_404(Question, id=id)
-    answers = question.answer_set.all()
+    try:
+        question = Question.objects.get(id=id)
+    except Question.DoesNotExist:
+        raise Http404
+    answers = Answer.objects.filter(question=id)
 
     return render(request, 'question.html', context={
         'question': question,
